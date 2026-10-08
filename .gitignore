@@ -1,0 +1,21 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Hypothesis
+.hypothesis/
+
+# Coverage outputs
+.coverage
+coverage.xml
+htmlcov/
+
+# Packaging/build artifacts
+build/
+dist/
+*.egg-info/
+
+# Type/lint caches
+.mypy_cache/
+.ruff_cache/
