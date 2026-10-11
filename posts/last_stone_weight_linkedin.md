@@ -1,22 +1,20 @@
-# Python's heapq Had No Max-Heap (Until 3.14). Here's the Negation Trick 🪨
+# Python's heapq Had No Max-Heap (Until 3.14). The Negation Trick to Create a Max-Heap 🪨
 
 **The Problem**:
 Given an array of stone weights, repeatedly smash the two heaviest stones together. If they're equal, both vanish. Otherwise the heavier one survives with the difference. Return the weight of the last stone, or `0` if none remain.
 
-Every turn asks for the same thing: *"give me the maximum, twice, then insert a new value."* That's a textbook **priority queue**. But before Python 3.14, `heapq` only ships a **min-heap**. (3.14 adds `heapify_max`, `heappush_max` and `heappop_max`. I'm on 3.11, so negation it is.)
+Every turn asks for the same thing: *"give me the maximum, twice, then insert a new value (maybe)."* That's a textbook **priority queue**. But before Python 3.14, `heapq` only ships a **min-heap**. (3.14 adds `heapify_max`, `heappush_max` and `heappop_max`. I'm on 3.11, so negation is my path to a max-heap.)
 
 ---
 
 ### 💡 The Trick: Store Negatives
 
-Negate every weight on the way in. The smallest value in the heap is now the heaviest stone.
+Negate every weight on the way in. The smallest value in the min-heap now represents the heaviest stone. For instance, if the heaviest stone is 10, then -1 is at the root of this min-heap, effectively turning it into a max-heap.
 
 1️⃣ **Build in linear time**: `heapify` turns the negated list into a heap in $\mathcal{O}(n)$, instead of $n$ pushes at $\mathcal{O}(n \log n)$.
 2️⃣ **Smash**: pop two values, and if they differ, push their difference back.
 3️⃣ **Stay in negative space**: the first pop is always the heaviest, so the difference of the two negatives is already the correct negative result. No `abs()` calls needed.
 4️⃣ **Answer**: negate the survivor, or return `0` if the heap is empty.
-
-My first draft called `abs()` on every pop and again on every push. It worked, but it hid the fact that the sign was never in question. Removing those calls made the logic easier to reason about.
 
 ---
 
