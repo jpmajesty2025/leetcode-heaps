@@ -1,6 +1,6 @@
 # When O(n) Quickselect Loses to O(n log k) Heap (Part 2 of 2) ⚡
 
-In Part 1, a size-k max-heap solved K Closest Points to Origin in O(n log k) time and O(k) space. But the problem gives a key clue: **"You may return the answer in any order."**
+In Part 1, a size-k max-heap solved K Closest Points to Origin in O(n log k) time. But the problem gives a clue: **"You may return the answer in any order."**
 
 If we don't need the k points sorted, can we hit linear time? Yes—with **Quickselect (Hoare's Selection)**.
 
@@ -8,7 +8,7 @@ If we don't need the k points sorted, can we hit linear time? Yes—with **Quick
 
 ### 🎯 The Linear-Time Intuition
 
-Quicksort partitions around a pivot and sorts both sides in O(n log n). Quickselect partitions on squared distance, but only recurses into the side containing boundary k.
+Quicksort partitions around a pivot and sorts both sides in O(n log n). Quickselect only recurses into the side containing boundary k.
 
 The work shrinks geometrically: n + n/2 + n/4 + ... = O(n) average time!
 
@@ -27,15 +27,15 @@ Textbook theory says O(n) Quickselect should beat O(n log k) Heap. But hardware 
 | k = 50,000 | **0.066s** | 0.133s | **Heap (2.0x faster)** |
 
 Why does the heap win in practice?
-1️⃣ **Early Filtering**: For small k, once the root settles, >99.9% of points are rejected with a single O(1) check. Quickselect still partitions and swaps elements.
+1️⃣ **Early Filtering**: For small k, >99.9% of points are rejected with a single O(1) check once the root settles. Quickselect still partitions and swaps elements.
 2️⃣ **C vs Python**: Python's `heapq` runs in compiled C. Quickselect's array swaps run in Python bytecode.
 
 ---
 
 ### ⚖️ The Real-World Trade-off
 
-- **Use Size-k Heap**: when k << n or handling streaming data where n is unknown. Memory stays capped at O(k) and early filtering dominates.
-- **Use Quickselect**: when k is close to n, memory must be O(1), or in C/C++ where in-place pointer swaps are instant.
+- **Size-k Heap**: wins when k << n or with streaming data where n is unknown. Memory stays capped at O(k) and early filtering dominates.
+- **Quickselect**: wins when k is close to n, memory must be O(1), or in C/C++ where in-place pointer swaps are instant.
 
 ---
 
@@ -44,7 +44,7 @@ Why does the heap win in practice?
 I tested both implementations with a 47-test suite and Hypothesis:
 - Boundary conditions: k = 1, k = n, origin [0,0], negatives
 - Rotational symmetry: reflecting across the origin preserves distances
-- Invariant check: proved no excluded point is closer than any included point
+- Invariant: proved no excluded point is closer than any included point
 
 ---
 
