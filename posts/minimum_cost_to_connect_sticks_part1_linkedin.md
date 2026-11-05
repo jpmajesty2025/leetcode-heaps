@@ -20,14 +20,6 @@ After each merge, the new stick joins the pool, so the paradigm is: "give me the
 
 ---
 
-### 🐛 The Quiet Side Effect I Found
-
-My first version heapified the caller's list in place and popped from it. The answer was right, but after the call, `[2, 4, 3]` had become `[9]`. **The function destroyed its own input.**
-
-The fix is one line: copy the list first. It's an easy thing to miss, because the result is correct and only the surrounding code pays for it.
-
----
-
 ### 📊 Complexity
 
 - **Time:** $\mathcal{O}(n \log n)$. There are $n - 1$ merges, each with two pops and one push.
@@ -37,7 +29,7 @@ The fix is one line: copy the list first. It's an easy thing to miss, because th
 
 ### 🎯 Key Takeaway
 
-When the cost of an operation depends on the *size of its result*, and results keep getting reused, merge the smallest items first. And always check what your function does to its inputs.
+When the cost of an operation depends on the *size of its result*, and results keep getting reused, merge the smallest items first.
 
 What other problems have you recognized as Huffman in disguise? Let's discuss below! 👇
 
