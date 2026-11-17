@@ -89,7 +89,7 @@ def min_operations(nums: list[int], k: int) -> int:
         raise ValueError("k must satisfy 1 <= k <= len(nums)")
 
     window = _MedianWindow()
-    best = None
+    best: int | None = None
     for i, value in enumerate(nums):
         window.add(value)
         if i >= k:
@@ -97,4 +97,5 @@ def min_operations(nums: list[int], k: int) -> int:
         if i >= k - 1:
             cost = window.cost()
             best = cost if best is None else min(best, cost)
+    assert best is not None
     return best

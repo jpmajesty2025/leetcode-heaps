@@ -53,7 +53,7 @@ def min_operations(nums: list[int], k: int) -> int:
     tree = _Fenwick(len(values))
 
     window_sum = 0
-    best = None
+    best: int | None = None
     for i, value in enumerate(nums):
         tree.update(rank_of[value], value, +1)
         window_sum += value
@@ -67,4 +67,5 @@ def min_operations(nums: list[int], k: int) -> int:
             count_low, sum_low = tree.prefix(median_rank)  # elements <= median
             cost = (median * count_low - sum_low) + ((window_sum - sum_low) - median * (k - count_low))
             best = cost if best is None else min(best, cost)
+    assert best is not None
     return best
